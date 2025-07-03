@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -23,20 +23,25 @@ export class ProxyService {
   async forward(req: ProxyRequest): Promise<any> {
     const { method, path, query, body } = req;
 
-    const response = await this.client.request({
-      url: path,
-      method: method,
-      headers: {
-        Authorization: `Bearer ${this.apiKey}`,
-      },
-      params: query,
-      data: body,
-    });
-
-    return {
-      statusCode: response.status,
-      data: response.data as unknown,
-      headers: response.headers,
-    };
+    return this.client
+      .request({
+        url: path,
+        method: method,
+        headers: {
+          Authorization: `Bearer ${this.apiKey}`,
+        },
+        params: query,
+        data: body,
+      })
+      .then((response) => ({
+        statusCode: response.status,
+        data: response.data as unknown,
+      }))
+      .catch((error: AxiosError) => {
+        return {
+          statusCode: error?.response?.status,
+          data: error?.response?.data,
+        };
+      });
   }
 }
