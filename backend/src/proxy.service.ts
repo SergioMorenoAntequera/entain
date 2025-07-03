@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
-const TMDB_API_KEY =
-  'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiZmQwNzA5MWZmZGJmYTlkNmU1ZjhjOWM0OGFkOGEyMSIsIm5iZiI6MTc1MTI5OTYzOC45NTgwMDAyLCJzdWIiOiI2ODYyYjYzNjI0Y2FhYjgyYWU3ZjFlNjgiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.f58nkBWd8mEIQTTDqhmaBpYGJXZitdNf5FmShFNbmCg';
 
 interface ProxyRequest {
   method: string;
@@ -14,9 +13,12 @@ interface ProxyRequest {
 
 @Injectable()
 export class ProxyService {
-  private readonly client = axios.create({
-    baseURL: TMDB_BASE_URL,
-  });
+  private readonly apiKey: string;
+  private readonly client = axios.create({ baseURL: TMDB_BASE_URL });
+
+  constructor(private readonly configService: ConfigService) {
+    this.apiKey = this.configService.get<string>('TMDB_API_KEY')!;
+  }
 
   async forward(req: ProxyRequest): Promise<any> {
     const { method, path, query, body } = req;
@@ -25,7 +27,7 @@ export class ProxyService {
       url: path,
       method: method,
       headers: {
-        Authorization: `Bearer ${TMDB_API_KEY}`,
+        Authorization: `Bearer ${this.apiKey}`,
       },
       params: query,
       data: body,
