@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 
 import "./style/index.css"
 import ROUTES from "./routes"
+import MainLayout from "./layouts/MainLayout";
 
 const container = document.getElementById("root")
 
@@ -18,9 +19,10 @@ if (container) {
         <BrowserRouter>
           <Routes>
             
-            {ROUTES.map((route, index) => (
-              <Route key={index } path={route.path} element={route.element} />
-            ))}
+            {ROUTES.map((route, index) => {
+              const Layout = route.layout || MainLayout
+              return <Route key={index} path={route.path} element={<Layout>{route.element}</Layout>} />
+            })}
 
           </Routes>
         </BrowserRouter>
