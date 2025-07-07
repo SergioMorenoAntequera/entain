@@ -2,9 +2,10 @@ import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { Provider } from "react-redux"
 import { store } from "./app/store"
-import MoviesList from "./features/movies/components/MoviesList"
+import { BrowserRouter, Routes, Route } from "react-router";
 
 import "./style/index.css"
+import ROUTES from "./routes"
 
 const container = document.getElementById("root")
 
@@ -14,9 +15,15 @@ if (container) {
   root.render(
     <StrictMode>
       <Provider store={store}>
-        
-        <MoviesList />
+        <BrowserRouter>
+          <Routes>
+            
+            {ROUTES.map((route, index) => (
+              <Route key={index } path={route.path} element={route.element} />
+            ))}
 
+          </Routes>
+        </BrowserRouter>
       </Provider>
     </StrictMode>,
   )
