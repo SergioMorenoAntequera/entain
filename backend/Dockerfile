@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 3000
 
 # Step 6: Start the backend server with nodemon for live-reloading
-CMD ["npm", "run", "start"] 
+CMD ["npm", "run", "start:dev"] 
