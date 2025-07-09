@@ -3,6 +3,7 @@ import styled from 'styled-components'
 export const Wrapper = styled.div`
   position: relative;
   display: inline-block;
+  width: 100%;
 `
 
 export const SearchInput = styled.input`
@@ -12,10 +13,23 @@ export const SearchInput = styled.input`
   border-radius: 6px;
   font-size: 1rem;
   width: 260px;
-  transition: border 0.2s;
+  max-width: 90vw;
+  transition: border 0.2s, width 0.2s;
+  box-sizing: border-box;
   &:focus {
     border-color: #0077ff;
     outline: none;
+  }
+  @media (max-width: 600px) {
+    width: 180px;
+    font-size: 0.97rem;
+    padding: 9px 10px;
+  }
+  @media (max-width: 400px) {
+    width: 120px;
+    font-size: 0.93rem;
+    padding: 8px 8px;
+    margin-left: 6px;
   }
 `
 
@@ -27,11 +41,24 @@ export const Modal = styled.div`
   border: 1px solid #ccc;
   border-radius: 8px;
   width: 340px;
+  max-width: 95vw;
   z-index: 1000;
   max-height: 420px;
   overflow-y: auto;
   box-shadow: 0 4px 16px rgba(0,0,0,0.18);
   padding: 8px 0;
+  @media (max-width: 600px) {
+    width: 220px;
+    font-size: 0.97rem;
+  }
+  @media (max-width: 400px) {
+    width: 98vw;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 0 0 8px 8px;
+    min-width: 0;
+    padding: 4px 0;
+  }
 `
 
 export const ModalMessage = styled.div`
@@ -39,6 +66,14 @@ export const ModalMessage = styled.div`
   color: #888;
   font-size: 1rem;
   text-align: center;
+  @media (max-width: 600px) {
+    font-size: 0.97rem;
+    padding: 14px 8px;
+  }
+  @media (max-width: 400px) {
+    font-size: 0.93rem;
+    padding: 10px 4px;
+  }
 `
 
 export const MovieCard = styled.div`
@@ -54,6 +89,12 @@ export const MovieCard = styled.div`
   &:last-child {
     border-bottom: none;
   }
+  @media (max-width: 600px) {
+    padding: 10px 8px;
+  }
+  @media (max-width: 400px) {
+    padding: 8px 4px;
+  }
 `
 
 export const Poster = styled.img`
@@ -64,6 +105,16 @@ export const Poster = styled.img`
   margin-right: 16px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   background: #eee;
+  @media (max-width: 600px) {
+    width: 38px;
+    height: 56px;
+    margin-right: 8px;
+  }
+  @media (max-width: 400px) {
+    width: 28px;
+    height: 40px;
+    margin-right: 4px;
+  }
 `
 
 export const MovieInfo = styled.div`
@@ -80,10 +131,22 @@ export const MovieTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  @media (max-width: 600px) {
+    font-size: 0.97rem;
+  }
+  @media (max-width: 400px) {
+    font-size: 0.93rem;
+  }
 `
 
 export const MovieYear = styled.div`
   font-size: 0.92rem;
   color: #666;
   margin-top: 2px;
+  @media (max-width: 600px) {
+    font-size: 0.89rem;
+  }
+  @media (max-width: 400px) {
+    font-size: 0.85rem;
+  }
 ` 
