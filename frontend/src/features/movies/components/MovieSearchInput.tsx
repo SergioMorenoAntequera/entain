@@ -3,6 +3,7 @@ import type { Movie } from '../types/Movie'
 import { useNavigate } from 'react-router'
 import useDebouncedValue from '../../../hooks/useDebouncedValue'
 import useActiveInput from '../hooks/useActiveInput'
+import { Wrapper, SearchInput, Modal, ModalMessage, MovieCard, Poster, MovieInfo, MovieTitle, MovieYear } from './MovieSearchInput.styles'
 
 function MovieSearchInput() {
   const navigate = useNavigate()
@@ -15,8 +16,8 @@ function MovieSearchInput() {
   const shouldShowModal = showModal && debouncedSearch && inputFocused
 
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <input
+    <Wrapper>
+      <SearchInput
         ref={inputRef}
         type="text"
         placeholder="Search movies..."
@@ -28,46 +29,40 @@ function MovieSearchInput() {
         onClick={onInputClick}
         onFocus={onInputFocus}
         onBlur={() => {}}
-        style={{ marginLeft: 16 }}
       />
 
       {shouldShowModal && (
-        <div style={{
-          position: 'absolute',
-          top: 36,
-          left: 0,
-          background: 'white',
-          border: '1px solid #ccc',
-          borderRadius: 4,
-          width: 300,
-          zIndex: 1000,
-          maxHeight: 400,
-          overflowY: 'auto',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-        }}>
-            
-          {isFetching && <div style={{ padding: 12 }}> Loading... </div>}
-          
-          {!isFetching && movies.length === 0 && <div style={{ padding: 12 }}>No movies found.</div>}
-
+        <Modal>
+          {isFetching && <ModalMessage>Loading...</ModalMessage>}
+          {!isFetching && movies.length === 0 && <ModalMessage>No movies found.</ModalMessage>}
           {!isFetching && movies.map((movie: Movie) => (
-            
-            <div 
-              key={movie.id} 
-              style={{ padding: 12, borderBottom: '1px solid #eee', cursor: 'pointer' }}
+            <MovieCard
+              key={movie.id}
               onMouseDown={e => {
                 e.preventDefault();
                 navigate(`/${movie.id}`, { state: { movie } });
               }}
             >
-              {movie.poster_path && <img src={`${IMAGES_URL}${movie.poster_path}`} alt={movie.title} style={{ width: 50, height: 75 }} />}
-              {movie.title}
-            </div>
-            
+              {movie.poster_path ? (
+                <Poster src={`${IMAGES_URL}${movie.poster_path}`} alt={movie.title} />
+              ) : (
+                <Poster as="div" style={{ background: '#ddd', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaa', fontSize: 12 }}>
+                  No Image
+                </Poster>
+              )}
+              <MovieInfo>
+                <MovieTitle title={movie.title}>{movie.title}</MovieTitle>
+                {movie.release_date && (
+                  <MovieYear>
+                    {new Date(movie.release_date).getFullYear()}
+                  </MovieYear>
+                )}
+              </MovieInfo>
+            </MovieCard>
           ))}
-        </div>
+        </Modal>
       )}
-    </div>
+    </Wrapper>
   )
 }
 
