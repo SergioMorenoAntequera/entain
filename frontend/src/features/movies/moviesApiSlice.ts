@@ -6,7 +6,7 @@ import { LanguageCode } from "./types/utils.types"
 export const IMAGES_URL = 'https://image.tmdb.org/t/p/w500'
 
 export const moviesApiSlice = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000" }),
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000' }),
   reducerPath: "moviesApi",
   tagTypes: ['Movies'],
 
